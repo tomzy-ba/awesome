@@ -51,7 +51,7 @@ beautiful.init("/home/tom/.config/awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
-editor = os.getenv("EDITOR") or "nano"
+editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -326,13 +326,6 @@ globalkeys = gears.table.join(
     -- Menubar
     awful.key({ modkey }, "d", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"}),
-
-    -- tom
-    awful.key({ modkey },	  "`", 	function ()
-	    awful.spawn("alacritty -e sudo nvim +124 /etc/nixos/configuration.nix")
-    end,
-    {description = "configuration.nix", group = "launcher"}),
-
     awful.key({ modkey },	  "w",  function ()
 	    awful.spawn("firefox")
     end,
@@ -343,7 +336,7 @@ globalkeys = gears.table.join(
 )
 
 clientkeys = gears.table.join(
-    awful.key({ modkey,           }, "f",
+    awful.key({ modkey,           }, "",
         function (c)
             c.fullscreen = not c.fullscreen
             c:raise()
@@ -374,7 +367,7 @@ clientkeys = gears.table.join(
             c.minimized = true
         end ,
         {description = "minimize", group = "client"}),
-    awful.key({ modkey,           }, "m",
+    awful.key({ modkey,           }, "f",
         function (c)
             c.maximized = not c.maximized
             c:raise()
@@ -468,11 +461,12 @@ awful.rules.rules = {
     -- All clients will match this rule.
 
     {
-        rule_any = {},
+        rule_any = {
+				},
         properties = { 
-            floating = true,
+            -- floating = true,
             placement = awful.placement.right 
-        }
+        },
     },
 
     { rule = { },
@@ -496,6 +490,9 @@ awful.rules.rules = {
           "pinentry",
         },
         class = {
+					"Unity",
+					"Godot Engine",
+					--
           "Arandr",
           "Blueman-manager",
           "Gpick",
@@ -590,6 +587,8 @@ client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", {raise = false})
 end)
 
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+client.connect_signal("focus", function(c)
+	c.border_color = beautiful.border_focus 
+end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
